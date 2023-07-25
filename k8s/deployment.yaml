@@ -1,0 +1,52 @@
+#@ load("@ytt:data", "data")
+
+#@ for app in data.values.apps:
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #@ app.name
+  labels:
+    app: #@ app.name
+    type: user-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #@ app.name
+  template:
+    metadata:
+      labels:
+        app: #@ app.name
+    spec:
+      containers:
+        - name: #@ app.name
+          image: #@ "showpune/spring-petclinic-"+ str(app.name) + "-noeureka:3.0.2"
+          resources:
+            limits:
+              memory: 1024Mi
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CONFIG_SERVER_URL
+              value: "http://config-server:8888"
+#@ end
+
+#@ for app in data.values.apps:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: #@ app.name
+spec:
+  selector:
+    app: #@ app.name
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: #@ app.serviceType
+#@ end

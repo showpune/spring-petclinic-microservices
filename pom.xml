@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.1.1</version>
     </parent>
 
     <groupId>org.springframework.samples</groupId>
@@ -16,12 +16,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-petclinic-admin-server</module>
         <module>spring-petclinic-customers-service</module>
         <module>spring-petclinic-vets-service</module>
         <module>spring-petclinic-visits-service</module>
-        <module>spring-petclinic-config-server</module>
-        <module>spring-petclinic-discovery-server</module>
         <module>spring-petclinic-api-gateway</module>
     </modules>
 
@@ -37,6 +34,7 @@
         <docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
         <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
         <docker.plugin.version>1.2.0</docker.plugin.version>
+        <image.name>showpune/${project.name}-noeureka:${project.version}</image.name>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +73,11 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <name>${image.name}</name>
+                            </image>
+                        </configuration>
                         <executions>
                             <execution>
                                 <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->

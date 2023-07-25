@@ -1,0 +1,11 @@
+#@data/values
+---
+apps:
+  - name: api-gateway
+    serviceType: LoadBalancer
+  - name: customers-service
+    serviceType: ClusterIP
+  - name: vets-service
+    serviceType: ClusterIP
+  - name: visits-service
+    serviceType: ClusterIP
