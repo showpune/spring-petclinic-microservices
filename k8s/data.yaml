@@ -1,11 +1,21 @@
 #@data/values
 ---
 apps:
+  - name: config-server
+    serviceType: ClusterIP
+    port: 8888
   - name: api-gateway
     serviceType: LoadBalancer
+    port: 8080
   - name: customers-service
     serviceType: ClusterIP
+    port: 8080
   - name: vets-service
     serviceType: ClusterIP
+    port: 8080
   - name: visits-service
     serviceType: ClusterIP
+    port: 8080
+  - name: tracing-server
+    serviceType: ClusterIP
+    port: 9411
