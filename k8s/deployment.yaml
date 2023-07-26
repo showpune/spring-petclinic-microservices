@@ -14,10 +14,12 @@ spec:
   selector:
     matchLabels:
       app: #@ app.name
+      type: user-app
   template:
     metadata:
       labels:
         app: #@ app.name
+        type: user-app
     spec:
       containers:
         - name: #@ app.name
@@ -33,10 +35,13 @@ spec:
               cpu: 500m
               memory: 1024Mi
           ports:
-            - containerPort: 8080
+            - name: app-port
+              containerPort: #@ app.port
           env:
             - name: CONFIG_SERVER_URL
               value: "http://config-server"
+            - name: CONSOLE_LOG_THRESHOLD
+              value: "ALL"
 #@ end
 
 #@ for app in data.values.apps:
@@ -51,10 +56,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      #@ if app.port:
-      targetPort: #@ app.port
-      #@ else:
-      targetPort: 8080
-      #@ end
+      targetPort: app-port
   type: #@ app.serviceType
 #@ end
